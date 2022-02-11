@@ -1,0 +1,37 @@
+{
+  "name": "aio-json",
+  "version": "1.0.0",
+  "description": "generate json interactive",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "react-scripts": "latest"
+  },
+  "dependencies": {
+    "@mdi/js": "6.5.95",
+    "@mdi/react": "1.5.0",
+    "aio-button": "4.1.0",
+    "jquery": "^3.6.0",
+    "null": "2.0.0",
+    "prop-types": "15.8.1",
+    "r-range-slider": "4.1.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-virtual-dom": "2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohammadFeiz/json-generator.git"
+  },
+  "author": "mohammad s feiz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohammadFeiz/json-generator/issues"
+  },
+  "homepage": "https://github.com/mohammadFeiz/json-generator#readme"
+}
