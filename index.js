@@ -677,6 +677,11 @@ var App = /*#__PURE__*/function (_Component) {
             }
           }
         }, {
+          attrs: {
+            style: {
+              overflow: 'hidden'
+            }
+          },
           html: /*#__PURE__*/_react.default.createElement(_aioButton.default, {
             style: {
               background: 'none',

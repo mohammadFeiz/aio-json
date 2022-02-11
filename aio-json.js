@@ -264,7 +264,7 @@ export default class App extends Component {
         {size:level * indent},
         {show:name !== undefined,html:()=><TextField canEmpty={false} color={variableColor} value={name} canSpace={false} onChange={(v)=>{o.name = v; this.setState({variables})}}/>},
         {show:name !== undefined,html:':',attrs:{style:{color:variableColor}}},
-        {html:(
+        {attrs:{style:{overflow:'hidden'}},html:(
           <AIOButton style={{background:'none',fontSize:'inherit',color:booleanColor}}
             type='select' value={value} caret={false} 
             options={[{text:'false',value:false,style:{height:24}},{text:'true',value:true,style:{height:24}}]} 
