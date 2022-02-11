@@ -171,16 +171,36 @@ var App = /*#__PURE__*/function (_Component) {
   }, {
     key: "generate",
     value: function generate() {
-      var variables = this.state.variables;
-      this.res = {};
+      var _this$state = this.state,
+          variables = _this$state.variables,
+          json = _this$state.json;
 
-      for (var i = 0; i < variables.length; i++) {
-        var variable = variables[i];
-        var name = variable.name;
-        this.res[name] = this.generateReq(variable);
+      if (json === false) {
+        return;
       }
 
-      return this.res;
+      var type = this.getType(json);
+
+      if (type === 'object') {
+        this.res = {};
+
+        for (var i = 0; i < variables.length; i++) {
+          var variable = variables[i];
+          var name = variable.name;
+          this.res[name] = this.generateReq(variable);
+        }
+
+        return this.res;
+      } else if (type === 'array') {
+        this.res = [];
+
+        for (var _i = 0; _i < variables.length; _i++) {
+          var _variable = variables[_i];
+          this.res.push(this.generateReq(_variable));
+        }
+
+        return this.res;
+      }
     }
   }, {
     key: "generateReq",
@@ -205,8 +225,8 @@ var App = /*#__PURE__*/function (_Component) {
       if (type === 'object') {
         var _res = {};
 
-        for (var _i = 0; _i < value.length; _i++) {
-          _res[value[_i].name] = this.generateReq(value[_i]);
+        for (var _i2 = 0; _i2 < value.length; _i2++) {
+          _res[value[_i2].name] = this.generateReq(value[_i2]);
         }
 
         return _res;
@@ -365,10 +385,10 @@ var App = /*#__PURE__*/function (_Component) {
     value: function getSettingButton() {
       var _this6 = this;
 
-      var _this$state = this.state,
-          indent = _this$state.indent,
-          height = _this$state.height,
-          fontSize = _this$state.fontSize;
+      var _this$state2 = this.state,
+          indent = _this$state2.indent,
+          height = _this$state2.height,
+          fontSize = _this$state2.fontSize;
       return {
         size: 24,
         align: 'vh',
@@ -522,14 +542,14 @@ var App = /*#__PURE__*/function (_Component) {
           name = o.name,
           _o$value = o.value,
           value = _o$value === void 0 ? type === 'text' ? '' : 0 : _o$value,
-          _this$state2 = this.state,
-          variables = _this$state2.variables,
-          indent = _this$state2.indent,
-          height = _this$state2.height,
-          variableColor = _this$state2.variableColor,
-          numberColor = _this$state2.numberColor,
-          textColor = _this$state2.textColor,
-          border = _this$state2.border;
+          _this$state3 = this.state,
+          variables = _this$state3.variables,
+          indent = _this$state3.indent,
+          height = _this$state3.height,
+          variableColor = _this$state3.variableColor,
+          numberColor = _this$state3.numberColor,
+          textColor = _this$state3.textColor,
+          border = _this$state3.border;
       var color = type === 'text' ? textColor : numberColor;
       return {
         attrs: {
@@ -611,13 +631,13 @@ var App = /*#__PURE__*/function (_Component) {
 
       var name = o.name,
           value = o.value,
-          _this$state3 = this.state,
-          variables = _this$state3.variables,
-          indent = _this$state3.indent,
-          height = _this$state3.height,
-          variableColor = _this$state3.variableColor,
-          booleanColor = _this$state3.booleanColor,
-          border = _this$state3.border;
+          _this$state4 = this.state,
+          variables = _this$state4.variables,
+          indent = _this$state4.indent,
+          height = _this$state4.height,
+          variableColor = _this$state4.variableColor,
+          booleanColor = _this$state4.booleanColor,
+          border = _this$state4.border;
       return {
         attrs: {
           style: {
@@ -703,12 +723,12 @@ var App = /*#__PURE__*/function (_Component) {
           value = o.value,
           _o$_open2 = o._open,
           _open = _o$_open2 === void 0 ? true : _o$_open2,
-          _this$state4 = this.state,
-          variables = _this$state4.variables,
-          indent = _this$state4.indent,
-          height = _this$state4.height,
-          variableColor = _this$state4.variableColor,
-          border = _this$state4.border,
+          _this$state5 = this.state,
+          variables = _this$state5.variables,
+          indent = _this$state5.indent,
+          height = _this$state5.height,
+          variableColor = _this$state5.variableColor,
+          border = _this$state5.border,
           column = [];
 
       column.push({
@@ -839,9 +859,10 @@ var App = /*#__PURE__*/function (_Component) {
     value: function getHeader(mode) {
       var _this10 = this;
 
-      var _this$state5 = this.state,
-          variables = _this$state5.variables,
-          _open = _this$state5._open,
+      var _this$state6 = this.state,
+          variables = _this$state6.variables,
+          _open = _this$state6._open,
+          json = _this$state6.json,
           column = [];
       var _this$props = this.props,
           onSubmit = _this$props.onSubmit,
@@ -890,7 +911,7 @@ var App = /*#__PURE__*/function (_Component) {
                 });
               } else {
                 _this10.setState({
-                  generated: JSON.stringify(_this10.generate(), undefined, 4)
+                  generated: JSON.stringify(_this10.generate(json), undefined, 4)
                 });
               }
             }
@@ -924,12 +945,12 @@ var App = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this11 = this;
 
-      var _this$state6 = this.state,
-          variables = _this$state6.variables,
-          _open = _this$state6._open,
-          fontSize = _this$state6.fontSize,
-          generated = _this$state6.generated,
-          json = _this$state6.json,
+      var _this$state7 = this.state,
+          variables = _this$state7.variables,
+          _open = _this$state7._open,
+          fontSize = _this$state7.fontSize,
+          generated = _this$state7.generated,
+          json = _this$state7.json,
           column = [];
       var _this$props2 = this.props,
           className = _this$props2.className,

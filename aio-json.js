@@ -51,14 +51,26 @@ export default class App extends Component {
     }
   }
   generate(){
-    let {variables} = this.state;
-    this.res = {}
-    for(let i = 0; i < variables.length; i++){
-      let variable = variables[i];
-      let {name} = variable;
-      this.res[name] = this.generateReq(variable)
+    let {variables,json} = this.state;
+    if(json === false){return}
+    let type = this.getType(json);
+    if(type === 'object'){
+      this.res = {}
+      for(let i = 0; i < variables.length; i++){
+        let variable = variables[i];
+        let {name} = variable;
+        this.res[name] = this.generateReq(variable)
+      }
+      return this.res
     }
-    return this.res
+    else if(type === 'array'){
+      this.res = []
+      for(let i = 0; i < variables.length; i++){
+        let variable = variables[i];
+        this.res.push(this.generateReq(variable))
+      }
+      return this.res
+    }
   }
   generateReq({type,value}){
     if(type === 'text' || type === 'number' || type === 'boolean'){return value}
@@ -317,7 +329,7 @@ export default class App extends Component {
     onSubmit(this.generate())
   }
   getHeader(mode){
-    let {variables,_open} = this.state,column = [];
+    let {variables,_open,json} = this.state,column = [];
     let {onSubmit,onClose} = this.props;
     if(_open){column.push(this.getColumn({type:'object',value:variables},0,0,variables))}
     return {
@@ -333,7 +345,7 @@ export default class App extends Component {
               options={[{text:'JSON Builder',value:'builder'},{text:'JSON Preview',value:'preview'}]}
               onChange={(value)=>{
                 if(value === 'builder'){this.setState({generated:false})}
-                else {this.setState({generated:JSON.stringify(this.generate(),undefined,4)})}
+                else {this.setState({generated:JSON.stringify(this.generate(json),undefined,4)})}
               }}
             />
           )
@@ -351,7 +363,7 @@ export default class App extends Component {
       ]
     }
   }
-  render(){
+  render(){ 
     let {variables,_open,fontSize,generated,json} = this.state,column = [];
     let {className,style} = this.props;
     if(variables === false){
