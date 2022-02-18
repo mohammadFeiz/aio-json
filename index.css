@@ -20,9 +20,10 @@
   width:100%;
   color:#666;
   overflow: hidden;
+  background:none;
 }
 .json-builder-space{
-  width:24px;
+  width:28px;
   height:100%;
 }
 .json-builder-add{
@@ -31,7 +32,7 @@
   opacity:0.6;
 }
 .json-builder-header{
-  background:orange;
+  background:dodgerblue;
   color:#fff;
 }
 

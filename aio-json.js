@@ -17,7 +17,7 @@ export default class App extends Component {
       indent:24,height:24,fontSize:16,
       variableColor:'#ff0000',numberColor:'green',textColor:'#b81515',booleanColor:'#0000ff',background:'#eee',
       generated:false,border:'#ddd',
-      variables,json
+      variables,json,prevJson:JSON.stringify(json)
     }
   }
   regenerate(json){
@@ -112,14 +112,13 @@ export default class App extends Component {
   getRemoveButton(o,index,isRoot){
     let {variables} = this.state;
     return { 
-      size:24,align:'vh',
+      size:28,align:'vh',
       html:(
         <AIOButton 
-          style={{background:'rgba(0,0,0,.05)'}}
-          caret={false} className='json-builder-button' text={<Icon path={mdiClose} size={0.8}/>}
+          caret={false} className='json-builder-button' text={<Icon path={mdiClose} size={1}/>}
           onClick={()=>{
-            if(isRoot){this.setState({variables:false,json:false})}
-            else {o.splice(index,1); this.setState({variables})}
+            if(isRoot){this.setState({variables:false,json:false},()=>this.changeVariables())}
+            else {o.splice(index,1); this.setState({variables},()=>this.changeVariables())}
           }}
         />
       )
@@ -128,14 +127,13 @@ export default class App extends Component {
   getCloneButton(parent,index,o){
     let {variables} = this.state;
     return { 
-      size:24,align:'vh',
+      size:28,align:'vh',
       html:(
         <AIOButton 
-          style={{background:'rgba(0,0,0,.05)'}}
-          caret={false} className='json-builder-button' text={<Icon path={mdiContentCopy} size={0.8}/>}
+          caret={false} className='json-builder-button' text={<Icon path={mdiContentCopy} size={1}/>}
           onClick={()=>{
             parent.splice(index + 1,0,JSON.parse(JSON.stringify(o))); 
-            this.setState({variables})
+            this.setState({variables},()=>this.changeVariables())
           }}
         />
       )
@@ -143,11 +141,10 @@ export default class App extends Component {
   }
   getToggleButton(o){
     let {_open = true} = o;
-    return {size:24,align:'vh',html:(
+    return {size:28,align:'vh',html:(
       <AIOButton 
-        style={{background:'rgba(0,0,0,.05)'}}
         caret={false} className='json-builder-button' 
-        text={<Icon path={!_open?mdiChevronRight:mdiChevronDown} size={0.8}/>}
+        text={<Icon path={!_open?mdiChevronRight:mdiChevronDown} size={1}/>}
         onClick={()=>{o._open = !_open; this.setState({})}}
       />
     )}
@@ -157,7 +154,6 @@ export default class App extends Component {
     return {size:24,align:'vh',html:(
       <AIOButton 
         caret={false} className='json-builder-button' text={<Icon path={mdiCog} size={0.8}/>}
-        style={{background:'rgba(0,0,0,.05)'}}
         popOver={()=>{
           return (
             <RVD
@@ -226,12 +222,17 @@ export default class App extends Component {
       />
     )}
   }
-  getSpace(){return {html:<div className='json-builder-space' style={{background:'rgba(0,0,0,.05)'}}></div>}}
+  changeVariables(){
+    if(this.props.onChange){
+      this.props.onChange(this.generate())
+    }
+  }
+  getSpace(){return {html:<div className='json-builder-space'></div>}}
   getColumn(o,level,index,parent){
     return this[`get${{text:'NT',number:'NT',array:'AO',object:'AO',boolean:'Bool'}[o.type]}Variable`](o,level,index,parent)
   }
   getNTVariable(o,level,index,parent){
-    let {type,name,value = type === 'text'?'':0} = o,{variables,indent,height,variableColor,numberColor,textColor,border} = this.state;
+    let {type,name,value = type === 'text'?'':0} = o,{indent,height,variableColor,numberColor,textColor,border} = this.state;
     let color = type === 'text'?textColor:numberColor;
     return {
       attrs:{style:{borderBottom:`1px solid ${border}`}},size:height,
@@ -241,11 +242,11 @@ export default class App extends Component {
         {size:level * indent},
         {
           show:name !== undefined,
-          html:()=><TextField color={variableColor} canEmpty={false} value={name} canSpace={false} onChange={(v)=>{o.name = v; this.setState({variables})}}/>
+          html:()=><TextField color={variableColor} canEmpty={false} value={name} canSpace={false} onChange={(v)=>{o.name = v; this.changeVariables()}}/>
         },
         {show:name !== undefined,html:':',attrs:{style:{color:variableColor}}},
         {show:type==='text',html:'"',attrs:{style:{color}}},
-        {html:<TextField color={type === 'text'?textColor:color} type={type} value={value} onChange={(v)=>{o.value = v; this.setState({variables})}}/>},
+        {html:<TextField color={type === 'text'?textColor:color} type={type} value={value} onChange={(v)=>{o.value = v;  this.changeVariables()}}/>},
         {show:type==='text',html:'"',attrs:{style:{color}}},
         {html:','},
         {flex:1},
@@ -262,13 +263,13 @@ export default class App extends Component {
       row:[
         this.getSpace(),
         {size:level * indent},
-        {show:name !== undefined,html:()=><TextField canEmpty={false} color={variableColor} value={name} canSpace={false} onChange={(v)=>{o.name = v; this.setState({variables})}}/>},
+        {show:name !== undefined,html:()=><TextField canEmpty={false} color={variableColor} value={name} canSpace={false} onChange={(v)=>{o.name = v; this.changeVariables()}}/>},
         {show:name !== undefined,html:':',attrs:{style:{color:variableColor}}},
         {attrs:{style:{overflow:'hidden'}},html:(
           <AIOButton style={{background:'none',fontSize:'inherit',color:booleanColor}}
             type='select' value={value} caret={false} 
             options={[{text:'false',value:false,style:{height:24}},{text:'true',value:true,style:{height:24}}]} 
-            onChange={(v)=>{o.value = v; this.setState({variables})}}
+            onChange={(v)=>{o.value = v; this.setState({variables},()=>this.changeVariables())}}
           />
         )},
         {html:','},
@@ -279,7 +280,7 @@ export default class App extends Component {
     }
   }
   getAOVariable(o,level,index,parent){
-    let {name,value,_open = true} = o,{variables,indent,height,variableColor,border} = this.state,column = []
+    let {name,value,_open = true} = o,{indent,height,variableColor,border} = this.state,column = []
     column.push(
       {
         attrs:{style:{borderBottom:`1px solid ${border}`}},size:height,
@@ -287,7 +288,7 @@ export default class App extends Component {
         row:[
           level === 0?this.getSettingButton():this.getToggleButton(o),
           {size:level * indent},
-          {show:name !== undefined,html:()=>(<TextField canEmpty={false} color={variableColor} value={name} canSpace={false} onChange={(v)=>{o.name = v; this.setState({variables})}}/>)},
+          {show:name !== undefined,html:()=>(<TextField canEmpty={false} color={variableColor} value={name} canSpace={false} onChange={(v)=>{o.name = v; this.changeVariables()}}/>)},
           {show:name !== undefined,html:':',attrs:{style:{color:variableColor}}},
           {html:o.type === 'array' ? '[' : '{'},
           this.getAddButton((type)=>this.add(o.value,type,o.type === 'object')),
@@ -322,7 +323,12 @@ export default class App extends Component {
     else if(type === 'object'){obj = {type,value:[],_open:true}}
     if(hasName){obj.name = 'untitle'}
     o.push(obj);
-    this.setState({})
+    this.setState({},()=>{
+      if(this.props.onChange){
+        this.changeVariables()
+      }
+    })
+    
   }
   onSubmit(){ 
     let {onSubmit} = this.props;
@@ -333,15 +339,15 @@ export default class App extends Component {
     let {onSubmit,onClose} = this.props;
     if(_open){column.push(this.getColumn({type:'object',value:variables},0,0,variables))}
     return {
-      size:48,attrs:{className:'json-builder-header'},align:'v',
+      size:36,attrs:{className:'json-builder-header'},align:'v',
       row:[
         {
           flex:1,html:(
             <AIOButton 
-              icon={{size:[24,18 ,1],color:'#fff'}}
+              icon={{size:[14,12 ,1],color:'#fff'}}
               style={{color:'inherit'}}
               type='radio' value={mode} optionWidth='fit-content' 
-              optionStyle={{height:48}}
+              optionStyle={{height:36}}
               options={[{text:'JSON Builder',value:'builder'},{text:'JSON Preview',value:'preview'}]}
               onChange={(value)=>{
                 if(value === 'builder'){this.setState({generated:false})}
@@ -364,6 +370,13 @@ export default class App extends Component {
     }
   }
   render(){ 
+    if(this.props.onChange){
+      if(JSON.stringify(this.props.json) !== this.state.prevJson){
+        setTimeout(()=>{
+          this.setState({json:this.props.json,prevJson:JSON.stringify(this.props.json),variables:this.regenerate(this.props.json)})
+        },0)
+      }
+    }
     let {variables,_open,fontSize,generated,json} = this.state,column = [];
     let {className,style} = this.props;
     if(variables === false){
@@ -406,12 +419,7 @@ class TextField extends Component{
   constructor(props){
     super(props);
     this.dom = createRef()
-    this.state = {edit:false}
-  }
-  getValue(){
-    let {type = 'text',value,def = null} = this.props;
-    if(type === 'text' && value.toString().length === 0 && def !== null){return def;}
-    return value;
+    this.state = {edit:false,value:this.props.value,prevValue:this.props.value}
   }
   componentDidUpdate(){
     let input = $(this.dom.current);
@@ -423,17 +431,22 @@ class TextField extends Component{
   render(){
     let {edit} = this.state;
     let {onChange,canSpace = true,type='text',color,canEmpty = true} = this.props;
-    let value = this.getValue()
+    let {value,prevValue} = this.state;
+    if(this.props.value !== prevValue){
+      this.setState({value:this.props.value,prevValue:this.props.value})
+    }
     if(edit){
       return (
         <input 
           type={type} ref={this.dom} className='text-field-input' value={value} 
-          onBlur={()=>this.setState({edit:false})} 
+          onBlur={()=>{
+            this.setState({edit:false})
+            onChange(this.state.value)
+          }} 
           onChange={(e)=>{
             let value = e.target.value;
             if(!canSpace){value = value.replace(/\s/g,'');}
-            //value = value.trim()
-            onChange(value)}
+            this.setState({value})}
           }
         />
       )

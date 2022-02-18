@@ -83,7 +83,8 @@ var App = /*#__PURE__*/function (_Component) {
       generated: false,
       border: '#ddd',
       variables: variables,
-      json: json
+      json: json,
+      prevJson: JSON.stringify(json)
     };
     return _this;
   }
@@ -293,29 +294,30 @@ var App = /*#__PURE__*/function (_Component) {
 
       var variables = this.state.variables;
       return {
-        size: 24,
+        size: 28,
         align: 'vh',
         html: /*#__PURE__*/_react.default.createElement(_aioButton.default, {
-          style: {
-            background: 'rgba(0,0,0,.05)'
-          },
           caret: false,
           className: "json-builder-button",
           text: /*#__PURE__*/_react.default.createElement(_react2.Icon, {
             path: _js.mdiClose,
-            size: 0.8
+            size: 1
           }),
           onClick: function onClick() {
             if (isRoot) {
               _this3.setState({
                 variables: false,
                 json: false
+              }, function () {
+                return _this3.changeVariables();
               });
             } else {
               o.splice(index, 1);
 
               _this3.setState({
                 variables: variables
+              }, function () {
+                return _this3.changeVariables();
               });
             }
           }
@@ -329,23 +331,22 @@ var App = /*#__PURE__*/function (_Component) {
 
       var variables = this.state.variables;
       return {
-        size: 24,
+        size: 28,
         align: 'vh',
         html: /*#__PURE__*/_react.default.createElement(_aioButton.default, {
-          style: {
-            background: 'rgba(0,0,0,.05)'
-          },
           caret: false,
           className: "json-builder-button",
           text: /*#__PURE__*/_react.default.createElement(_react2.Icon, {
             path: _js.mdiContentCopy,
-            size: 0.8
+            size: 1
           }),
           onClick: function onClick() {
             parent.splice(index + 1, 0, JSON.parse(JSON.stringify(o)));
 
             _this4.setState({
               variables: variables
+            }, function () {
+              return _this4.changeVariables();
             });
           }
         })
@@ -360,17 +361,14 @@ var App = /*#__PURE__*/function (_Component) {
           _open = _o$_open === void 0 ? true : _o$_open;
 
       return {
-        size: 24,
+        size: 28,
         align: 'vh',
         html: /*#__PURE__*/_react.default.createElement(_aioButton.default, {
-          style: {
-            background: 'rgba(0,0,0,.05)'
-          },
           caret: false,
           className: "json-builder-button",
           text: /*#__PURE__*/_react.default.createElement(_react2.Icon, {
             path: !_open ? _js.mdiChevronRight : _js.mdiChevronDown,
-            size: 0.8
+            size: 1
           }),
           onClick: function onClick() {
             o._open = !_open;
@@ -399,9 +397,6 @@ var App = /*#__PURE__*/function (_Component) {
             path: _js.mdiCog,
             size: 0.8
           }),
-          style: {
-            background: 'rgba(0,0,0,.05)'
-          },
           popOver: function popOver() {
             return /*#__PURE__*/_react.default.createElement(_reactVirtualDom.default, {
               layout: {
@@ -511,14 +506,18 @@ var App = /*#__PURE__*/function (_Component) {
       };
     }
   }, {
+    key: "changeVariables",
+    value: function changeVariables() {
+      if (this.props.onChange) {
+        this.props.onChange(this.generate());
+      }
+    }
+  }, {
     key: "getSpace",
     value: function getSpace() {
       return {
         html: /*#__PURE__*/_react.default.createElement("div", {
-          className: "json-builder-space",
-          style: {
-            background: 'rgba(0,0,0,.05)'
-          }
+          className: "json-builder-space"
         })
       };
     }
@@ -543,7 +542,6 @@ var App = /*#__PURE__*/function (_Component) {
           _o$value = o.value,
           value = _o$value === void 0 ? type === 'text' ? '' : 0 : _o$value,
           _this$state3 = this.state,
-          variables = _this$state3.variables,
           indent = _this$state3.indent,
           height = _this$state3.height,
           variableColor = _this$state3.variableColor,
@@ -574,9 +572,7 @@ var App = /*#__PURE__*/function (_Component) {
               onChange: function onChange(v) {
                 o.name = v;
 
-                _this7.setState({
-                  variables: variables
-                });
+                _this7.changeVariables();
               }
             });
           }
@@ -604,9 +600,7 @@ var App = /*#__PURE__*/function (_Component) {
             onChange: function onChange(v) {
               o.value = v;
 
-              _this7.setState({
-                variables: variables
-              });
+              _this7.changeVariables();
             }
           })
         }, {
@@ -662,9 +656,7 @@ var App = /*#__PURE__*/function (_Component) {
               onChange: function onChange(v) {
                 o.name = v;
 
-                _this8.setState({
-                  variables: variables
-                });
+                _this8.changeVariables();
               }
             });
           }
@@ -709,6 +701,8 @@ var App = /*#__PURE__*/function (_Component) {
 
               _this8.setState({
                 variables: variables
+              }, function () {
+                return _this8.changeVariables();
               });
             }
           })
@@ -729,7 +723,6 @@ var App = /*#__PURE__*/function (_Component) {
           _o$_open2 = o._open,
           _open = _o$_open2 === void 0 ? true : _o$_open2,
           _this$state5 = this.state,
-          variables = _this$state5.variables,
           indent = _this$state5.indent,
           height = _this$state5.height,
           variableColor = _this$state5.variableColor,
@@ -759,9 +752,7 @@ var App = /*#__PURE__*/function (_Component) {
               onChange: function onChange(v) {
                 o.name = v;
 
-                _this9.setState({
-                  variables: variables
-                });
+                _this9.changeVariables();
               }
             });
           }
@@ -815,6 +806,8 @@ var App = /*#__PURE__*/function (_Component) {
   }, {
     key: "add",
     value: function add(o, type, hasName) {
+      var _this10 = this;
+
       var obj;
 
       if (type === 'text') {
@@ -851,7 +844,11 @@ var App = /*#__PURE__*/function (_Component) {
       }
 
       o.push(obj);
-      this.setState({});
+      this.setState({}, function () {
+        if (_this10.props.onChange) {
+          _this10.changeVariables();
+        }
+      });
     }
   }, {
     key: "onSubmit",
@@ -862,7 +859,7 @@ var App = /*#__PURE__*/function (_Component) {
   }, {
     key: "getHeader",
     value: function getHeader(mode) {
-      var _this10 = this;
+      var _this11 = this;
 
       var _this$state6 = this.state,
           variables = _this$state6.variables,
@@ -881,7 +878,7 @@ var App = /*#__PURE__*/function (_Component) {
       }
 
       return {
-        size: 48,
+        size: 36,
         attrs: {
           className: 'json-builder-header'
         },
@@ -890,7 +887,7 @@ var App = /*#__PURE__*/function (_Component) {
           flex: 1,
           html: /*#__PURE__*/_react.default.createElement(_aioButton.default, {
             icon: {
-              size: [24, 18, 1],
+              size: [14, 12, 1],
               color: '#fff'
             },
             style: {
@@ -900,7 +897,7 @@ var App = /*#__PURE__*/function (_Component) {
             value: mode,
             optionWidth: "fit-content",
             optionStyle: {
-              height: 48
+              height: 36
             },
             options: [{
               text: 'JSON Builder',
@@ -911,12 +908,12 @@ var App = /*#__PURE__*/function (_Component) {
             }],
             onChange: function onChange(value) {
               if (value === 'builder') {
-                _this10.setState({
+                _this11.setState({
                   generated: false
                 });
               } else {
-                _this10.setState({
-                  generated: JSON.stringify(_this10.generate(json), undefined, 4)
+                _this11.setState({
+                  generated: JSON.stringify(_this11.generate(json), undefined, 4)
                 });
               }
             }
@@ -926,7 +923,7 @@ var App = /*#__PURE__*/function (_Component) {
           html: /*#__PURE__*/_react.default.createElement("button", {
             className: "json-builder-submit",
             onClick: function onClick() {
-              return _this10.onSubmit();
+              return _this11.onSubmit();
             }
           }, "Submit")
         }, {
@@ -936,7 +933,7 @@ var App = /*#__PURE__*/function (_Component) {
           html: /*#__PURE__*/_react.default.createElement("button", {
             className: "json-builder-close",
             onClick: function onClick() {
-              return _this10.onClose();
+              return _this11.onClose();
             }
           }, /*#__PURE__*/_react.default.createElement(_react2.Icon, {
             path: _js.mdiClose,
@@ -948,7 +945,19 @@ var App = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this11 = this;
+      var _this12 = this;
+
+      if (this.props.onChange) {
+        if (JSON.stringify(this.props.json) !== this.state.prevJson) {
+          setTimeout(function () {
+            _this12.setState({
+              json: _this12.props.json,
+              prevJson: JSON.stringify(_this12.props.json),
+              variables: _this12.regenerate(_this12.props.json)
+            });
+          }, 0);
+        }
+      }
 
       var _this$state7 = this.state,
           variables = _this$state7.variables,
@@ -964,9 +973,9 @@ var App = /*#__PURE__*/function (_Component) {
       if (variables === false) {
         column.push({
           row: [this.getAddButton(function (type) {
-            return _this11.setState({
+            return _this12.setState({
               json: type === 'array' ? [] : {},
-              variables: _this11.regenerate(type === 'array' ? [] : {})
+              variables: _this12.regenerate(type === 'array' ? [] : {})
             });
           }, true)]
         });
@@ -1027,35 +1036,21 @@ var TextField = /*#__PURE__*/function (_Component2) {
   var _super2 = _createSuper(TextField);
 
   function TextField(props) {
-    var _this12;
+    var _this13;
 
     _classCallCheck(this, TextField);
 
-    _this12 = _super2.call(this, props);
-    _this12.dom = /*#__PURE__*/(0, _react.createRef)();
-    _this12.state = {
-      edit: false
+    _this13 = _super2.call(this, props);
+    _this13.dom = /*#__PURE__*/(0, _react.createRef)();
+    _this13.state = {
+      edit: false,
+      value: _this13.props.value,
+      prevValue: _this13.props.value
     };
-    return _this12;
+    return _this13;
   }
 
   _createClass(TextField, [{
-    key: "getValue",
-    value: function getValue() {
-      var _this$props3 = this.props,
-          _this$props3$type = _this$props3.type,
-          type = _this$props3$type === void 0 ? 'text' : _this$props3$type,
-          value = _this$props3.value,
-          _this$props3$def = _this$props3.def,
-          def = _this$props3$def === void 0 ? null : _this$props3$def;
-
-      if (type === 'text' && value.toString().length === 0 && def !== null) {
-        return def;
-      }
-
-      return value;
-    }
-  }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate() {
       var input = (0, _jquery.default)(this.dom.current);
@@ -1071,19 +1066,28 @@ var TextField = /*#__PURE__*/function (_Component2) {
   }, {
     key: "render",
     value: function render() {
-      var _this13 = this;
+      var _this14 = this;
 
       var edit = this.state.edit;
-      var _this$props4 = this.props,
-          _onChange = _this$props4.onChange,
-          _this$props4$canSpace = _this$props4.canSpace,
-          canSpace = _this$props4$canSpace === void 0 ? true : _this$props4$canSpace,
-          _this$props4$type = _this$props4.type,
-          type = _this$props4$type === void 0 ? 'text' : _this$props4$type,
-          color = _this$props4.color,
-          _this$props4$canEmpty = _this$props4.canEmpty,
-          canEmpty = _this$props4$canEmpty === void 0 ? true : _this$props4$canEmpty;
-      var value = this.getValue();
+      var _this$props3 = this.props,
+          onChange = _this$props3.onChange,
+          _this$props3$canSpace = _this$props3.canSpace,
+          canSpace = _this$props3$canSpace === void 0 ? true : _this$props3$canSpace,
+          _this$props3$type = _this$props3.type,
+          type = _this$props3$type === void 0 ? 'text' : _this$props3$type,
+          color = _this$props3.color,
+          _this$props3$canEmpty = _this$props3.canEmpty,
+          canEmpty = _this$props3$canEmpty === void 0 ? true : _this$props3$canEmpty;
+      var _this$state8 = this.state,
+          value = _this$state8.value,
+          prevValue = _this$state8.prevValue;
+
+      if (this.props.value !== prevValue) {
+        this.setState({
+          value: this.props.value,
+          prevValue: this.props.value
+        });
+      }
 
       if (edit) {
         return /*#__PURE__*/_react.default.createElement("input", {
@@ -1092,26 +1096,29 @@ var TextField = /*#__PURE__*/function (_Component2) {
           className: "text-field-input",
           value: value,
           onBlur: function onBlur() {
-            return _this13.setState({
+            _this14.setState({
               edit: false
             });
+
+            onChange(_this14.state.value);
           },
           onChange: function onChange(e) {
             var value = e.target.value;
 
             if (!canSpace) {
               value = value.replace(/\s/g, '');
-            } //value = value.trim()
+            }
 
-
-            _onChange(value);
+            _this14.setState({
+              value: value
+            });
           }
         });
       } else {
         return /*#__PURE__*/_react.default.createElement("div", {
           className: "text-field-text",
           onClick: function onClick() {
-            return _this13.setState({
+            return _this14.setState({
               edit: true
             });
           },
