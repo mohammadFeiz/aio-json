@@ -224,7 +224,10 @@ export default class App extends Component {
   }
   changeVariables(){
     if(this.props.onChange){
-      this.props.onChange(this.generate())
+      let res = this.props.onChange(this.generate());
+      if(res !== undefined){
+        this.setState({json:res,variables:this.regenerate(res)})
+      }
     }
   }
   getSpace(){return {html:<div className='json-builder-space'></div>}}

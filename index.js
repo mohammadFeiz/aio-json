@@ -509,7 +509,14 @@ var App = /*#__PURE__*/function (_Component) {
     key: "changeVariables",
     value: function changeVariables() {
       if (this.props.onChange) {
-        this.props.onChange(this.generate());
+        var res = this.props.onChange(this.generate());
+
+        if (res !== undefined) {
+          this.setState({
+            json: res,
+            variables: this.regenerate(res)
+          });
+        }
       }
     }
   }, {
