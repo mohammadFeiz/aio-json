@@ -1105,6 +1105,10 @@ var TextField = /*#__PURE__*/function (_Component2) {
           onChange: function onChange(e) {
             var value = e.target.value;
 
+            if (type === 'number') {
+              value = parseFloat(value);
+            }
+
             if (!canSpace) {
               value = value.replace(/\s/g, '');
             }

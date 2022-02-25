@@ -445,6 +445,7 @@ class TextField extends Component{
           }} 
           onChange={(e)=>{
             let value = e.target.value;
+            if(type === 'number'){value = parseFloat(value)}
             if(!canSpace){value = value.replace(/\s/g,'');}
             this.setState({value})}
           }
