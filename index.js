@@ -51,15 +51,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var App = /*#__PURE__*/function (_Component) {
-  _inherits(App, _Component);
+var AIOJson = /*#__PURE__*/function (_Component) {
+  _inherits(AIOJson, _Component);
 
-  var _super = _createSuper(App);
+  var _super = _createSuper(AIOJson);
 
-  function App(props) {
+  function AIOJson(props) {
     var _this;
 
-    _classCallCheck(this, App);
+    _classCallCheck(this, AIOJson);
 
     _this = _super.call(this, props);
     var _this$props$json = _this.props.json,
@@ -89,7 +89,7 @@ var App = /*#__PURE__*/function (_Component) {
     return _this;
   }
 
-  _createClass(App, [{
+  _createClass(AIOJson, [{
     key: "regenerate",
     value: function regenerate(json) {
       var type = this.getType(json);
@@ -1032,10 +1032,10 @@ var App = /*#__PURE__*/function (_Component) {
     }
   }]);
 
-  return App;
+  return AIOJson;
 }(_react.Component);
 
-exports.default = App;
+exports.default = AIOJson;
 
 var TextField = /*#__PURE__*/function (_Component2) {
   _inherits(TextField, _Component2);

@@ -6,7 +6,7 @@ import AIOButton from 'aio-button';
 import Slider from 'r-range-slider'; 
 import $ from 'jquery';
 import "./index.css";
-export default class App extends Component {
+export default class AIOJson extends Component {
   constructor(props){
     super(props);
     let {json = false} = this.props;
