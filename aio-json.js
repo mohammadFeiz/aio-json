@@ -318,6 +318,7 @@ export default class AIOJson extends Component {
     return {column}
   }
   add(o,type,hasName){
+    debugger;
     let obj;
     if(type === 'text'){obj = {type,value:''}}
     else if(type === 'number'){obj = {type,value:0}}
@@ -436,7 +437,7 @@ class TextField extends Component{
     let {onChange,canSpace = true,type='text',color,canEmpty = true} = this.props;
     let {value,prevValue} = this.state;
     if(this.props.value !== prevValue){
-      this.setState({value:this.props.value,prevValue:this.props.value})
+      setTimeout(()=>this.setState({value:this.props.value,prevValue:this.props.value}),0);
     }
     if(edit){
       return (

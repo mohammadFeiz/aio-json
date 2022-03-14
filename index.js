@@ -815,6 +815,7 @@ var AIOJson = /*#__PURE__*/function (_Component) {
     value: function add(o, type, hasName) {
       var _this10 = this;
 
+      debugger;
       var obj;
 
       if (type === 'text') {
@@ -1090,10 +1091,12 @@ var TextField = /*#__PURE__*/function (_Component2) {
           prevValue = _this$state8.prevValue;
 
       if (this.props.value !== prevValue) {
-        this.setState({
-          value: this.props.value,
-          prevValue: this.props.value
-        });
+        setTimeout(function () {
+          return _this14.setState({
+            value: _this14.props.value,
+            prevValue: _this14.props.value
+          });
+        }, 0);
       }
 
       if (edit) {
