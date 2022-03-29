@@ -1,6 +1,6 @@
 {
   "name": "aio-json",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "generate json interactive",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "dependencies": {
     "@mdi/js": "6.5.95",
     "@mdi/react": "1.5.0",
-    "aio-button": "4.1.0",
+    "aio-button": "4.3.1",
     "jquery": "^3.6.0",
     "null": "2.0.0",
     "prop-types": "15.8.1",
