@@ -1,6 +1,6 @@
 {
   "name": "aio-json",
-  "version": "3.0.2",
+  "version": "4.0.0",
   "description": "generate json interactive",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "r-range-slider": "4.1.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-virtual-dom": "2.0.0"
+    "react-virtual-dom": "2.1.0"
   },
   "repository": {
     "type": "git",
